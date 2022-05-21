@@ -1,10 +1,10 @@
-package com.ankit.spendtracker;
+package com.ankit.commons;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpendtrackerApplicationTests {
+class CommonsApplicationTests {
 
 	@Test
 	void contextLoads() {
