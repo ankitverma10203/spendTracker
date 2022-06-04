@@ -1,0 +1,24 @@
+.card {
+    background-color: white;
+    height: 90%;
+    width: 90%;
+    margin: auto;
+    border-radius: 0.5em;
+    box-shadow: 0 0 1em black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    padding: 2em;
+
+    min-height: 600px;
+    min-width: 400px;
+
+    max-width: 800px;
+    max-height: 1000px;
+}
+
+.input {
+    width: 100%;
+}

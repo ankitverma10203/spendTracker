@@ -1,0 +1,12 @@
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.account-icon {
+    transform: scale(2);
+}
+
+.nav-bar {
+    box-shadow: 0 0 1em black;
+    margin-bottom: 1em;
+}
