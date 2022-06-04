@@ -13,6 +13,13 @@ import { PageComponent } from './page/page.component';
 import { ContentContainerComponent } from './content-container/content-container.component';
 import { FormsModule } from '@angular/forms';
 import { InputComponent } from './input/input.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormComponent } from './form/form.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +28,8 @@ import { InputComponent } from './input/input.component';
     CardComponent,
     PageComponent,
     ContentContainerComponent,
-    InputComponent
+    InputComponent,
+    FormComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +38,13 @@ import { InputComponent } from './input/input.component';
     MatIconModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCardModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

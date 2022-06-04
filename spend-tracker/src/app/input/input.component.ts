@@ -7,11 +7,19 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class InputComponent implements OnInit {
 
-  @Input() public field: String | undefined;
+  @Input() public field: string = "";
+
+  options: string[] = ["Education", "Food", "Electronics", "Others"];
+
+  dropDownFields: string[] = ["Category"];
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  isDropdown(field: string): boolean {
+    return this.dropDownFields.includes(field)
   }
 
 }

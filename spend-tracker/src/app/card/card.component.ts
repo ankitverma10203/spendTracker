@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FieldType } from '../model/field-type';
 
 @Component({
   selector: 'app-card',
@@ -7,9 +9,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CardComponent implements OnInit {
 
-  @Input() public heading : String | undefined;
-
-  public fields : String[] = ["Category", "Name", "Amount"];
+  @Input() public heading: string = "";
+  @Input() public fields: any = null;
 
   constructor() { }
 

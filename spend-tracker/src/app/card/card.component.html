@@ -1,11 +1,8 @@
-<div class="card">
-    <div class="heading">
-        <h1>{{heading}}</h1>
-    </div>
-    <div *ngFor="let field of fields" class="input">
-        <app-input [field]="field" class="input"></app-input>
-    </div>
-    <div>
-        <button>Submit</button>
-    </div>
-</div>
+<mat-card class="card mat-elevation-z5">
+    <mat-card-header>
+        <mat-card-title>{{heading}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-content">
+        <app-form [heading]="heading" [fields]="fields"></app-form>
+    </mat-card-content>
+</mat-card>
