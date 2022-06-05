@@ -94,7 +94,7 @@ public class TrackerServiceImpl implements TrackerService {
 	public SortedSet<String> getAllDates() {
 		try (BufferedReader reader = Files.newBufferedReader(trackerInfoFilePath)) {
 
-			SortedSet<String> dates = new TreeSet<>();
+			TreeSet<String> dates = new TreeSet<>();
 			String line = reader.readLine();
 
 			while ((line = reader.readLine()) != null) {
@@ -103,7 +103,7 @@ public class TrackerServiceImpl implements TrackerService {
 				dates.add(date);
 			}
 			
-			return dates;
+			return dates.descendingSet();
 
 		} catch (IOException e) {
 			e.printStackTrace();
