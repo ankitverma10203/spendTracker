@@ -2,15 +2,17 @@
     <div *ngFor="let field of fields" class="input-field-container">
         <mat-form-field appearance="outline" class="input">
             <mat-label>{{field.name}}</mat-label>
-            <input *ngIf="!isDropdown(field)" [type]="field.type.toString()" matInput [placeholder]="field.name" [value]=field.defaultValue [formControlName]="field.name" class="input-field">
+            <input *ngIf="!isDropdown(field)" [type]="field.type.toString()" matInput [placeholder]="field.name" [value]="field.defaultValue" [formControlName]="field.name" class="input-field">
 
             <mat-select *ngIf="isDropdown(field)" [formControlName]="field.name">
                 <mat-option *ngFor="let option of field.options" [value]="option">{{option}}</mat-option>
             </mat-select>
-            <mat-hint>Hint</mat-hint>
+            <!-- <mat-hint [hidden]="!spendTrackerForm.get(field.name)?.hasError('required') && !spendTrackerForm.get(field.name)?.hasError('pattern')">Insert {{field.name}}</mat-hint> -->
+            <!-- <mat-error [hidden]="!spendTrackerForm.get(field.name)?.hasError('pattern') || spendTrackerForm.get(field.name)?.hasError('required')">{{field.name}} should be a number</mat-error> -->
+            <mat-error [hidden]="!spendTrackerForm.get(field.name)?.hasError('required')">{{field.name}} is required</mat-error>
         </mat-form-field>
     </div>
     <div class="submit">
-        <button mat-raised-button color="primary">Submit</button>
+        <button mat-raised-button color="primary" [disabled]="isSubmitDisabled()">Submit</button>
     </div>
 </form>

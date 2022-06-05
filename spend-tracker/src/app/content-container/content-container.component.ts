@@ -9,26 +9,29 @@ import { FieldType } from '../model/field-type';
 })
 export class ContentContainerComponent implements OnInit {
 
-  heading: string = "Heading";
+  heading: string = "Add Spend Details";
 
   public fields: FieldInfo[] = [
     {
       name: "Category",
       type: FieldType.dropDown,
-      defaultValue: "Education",
-      options: ["Education", "Food", "Electronics", "Others"]
+      defaultValue: "",
+      options: ["Education", "Food", "Electronics", "Others"],
+      isRequired: true
     },
     {
       name: "Message",
       type: FieldType.text,
       defaultValue: "",
-      options: []
+      options: [],
+      isRequired: true
     },
     {
       name: "Amount",
       type: FieldType.number,
       defaultValue: "",
-      options: []
+      options: [],
+      isRequired: true
     }
   ]
 

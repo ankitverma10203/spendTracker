@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +21,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form/form.component';
+import { SpendTrackerDataSenderService } from './service/spend-tracker-data-sender.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { FormComponent } from './form/form.component';
     MatInputModule,
     MatSelectModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
