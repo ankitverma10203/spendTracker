@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,7 +21,10 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form/form.component';
-import { SpendTrackerDataSenderService } from './service/spend-tracker-data-sender.service';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { RecordsComponent } from './records/records.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,8 @@ import { SpendTrackerDataSenderService } from './service/spend-tracker-data-send
     PageComponent,
     ContentContainerComponent,
     InputComponent,
-    FormComponent
+    FormComponent,
+    RecordsComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,10 @@ import { SpendTrackerDataSenderService } from './service/spend-tracker-data-send
     MatSelectModule,
     MatCardModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule,
+    MatExpansionModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

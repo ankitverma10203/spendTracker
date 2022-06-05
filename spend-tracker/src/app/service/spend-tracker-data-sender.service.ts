@@ -18,6 +18,6 @@ export class SpendTrackerDataSenderService {
    };
 
   sendSpendTrackerData(trackerInfo: TrackerInfoDTO ): Observable<any> {
-    return this.http.post("http://localhost:8080/tracker/test", trackerInfo, this.httpOptions);
+    return this.http.post("http://localhost:8080/tracker/save", trackerInfo, this.httpOptions);
   }
 }

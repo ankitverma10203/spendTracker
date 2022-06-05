@@ -1,8 +1,11 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FieldInfo } from '../model/field-info.model';
 import { FieldType } from '../model/field-type';
+import { FormData } from '../model/form-data.model';
 import { TrackerInfoDTO } from '../model/tracker-info-dto.model';
 import { SpendTrackerDataSenderService } from '../service/spend-tracker-data-sender.service';
 
@@ -13,12 +16,13 @@ import { SpendTrackerDataSenderService } from '../service/spend-tracker-data-sen
 })
 export class FormComponent implements OnInit {
 
-  @Input() public heading: string = "";
-  @Input() public fields: FieldInfo[] = [];
-
   spendTrackerForm: FormGroup = new FormGroup({});
 
-  constructor(private spendTrackerDataSenderService: SpendTrackerDataSenderService, private route: Router) { }
+  constructor(private spendTrackerDataSenderService: SpendTrackerDataSenderService,
+    private route: Router,
+    private _snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<FormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: FormData) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -27,7 +31,7 @@ export class FormComponent implements OnInit {
   public initForm() {
     this.spendTrackerForm = new FormGroup({});
 
-    this.fields.forEach(field => {
+    this.data.fields.forEach(field => {
       this.spendTrackerForm.addControl(field.name, new FormControl(field.defaultValue));
       if (field.isRequired) {
         this.spendTrackerForm.get(field.name)?.addValidators(Validators.required);
@@ -49,12 +53,15 @@ export class FormComponent implements OnInit {
   onSubmit() {
     console.log("formData: ", this.spendTrackerForm.value);
     let trackerInfo: TrackerInfoDTO = this.trackerInfo();
+    this.onNoClick();
     this.spendTrackerDataSenderService.sendSpendTrackerData(trackerInfo).subscribe((details) => {
       console.log("response: ", details);
       // this.spendTrackerForm.patchValue(
       //   { "Amount": 0 }
       // )
-      this.resetForm();
+      this._snackBar.open("Form submit", "Success", { duration: 3000 });
+
+      this.spendTrackerForm.reset();
       this.route.navigate(['/homepage'])
     });
 
@@ -62,28 +69,13 @@ export class FormComponent implements OnInit {
 
   public trackerInfo(): TrackerInfoDTO {
     let test: TrackerInfoDTO = new TrackerInfoDTO();
-    this.fields.forEach((field) => {
+    this.data.fields.forEach((field) => {
       test[field.name] = this.spendTrackerForm.get(field.name)?.value;
     })
 
     console.log("trackerInfo: ", test);
 
     return test;
-  }
-
-  public resetForm() {
-    // this.fields.forEach(field => {
-    //   this.spendTrackerForm.patchValue().patchValue(field.defaultValue);
-    // });
-
-    // this.spendTrackerForm.patchValue(
-    //   {
-    //     "Amount": 0,
-    //     "Message": " "
-    //   }
-    // )
-    this.spendTrackerForm.reset();
-
   }
 
   isDefaultHintHidden(fieldName: string): boolean {
@@ -96,6 +88,10 @@ export class FormComponent implements OnInit {
 
   isRequiredErrorHidden(fieldName: string): boolean {
     return !this.spendTrackerForm.get(fieldName)?.hasError('required');
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }
