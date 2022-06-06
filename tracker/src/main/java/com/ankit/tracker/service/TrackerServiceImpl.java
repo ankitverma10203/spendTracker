@@ -15,6 +15,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ankit.commons.Utility.Constants;
@@ -23,12 +26,19 @@ import com.ankit.commons.Utility.UtilMethods;
 @Service
 public class TrackerServiceImpl implements TrackerService {
 
-	private Path trackerInfoFilePath = Paths.get(Constants.TRACKER_INFO_FILEPATH);
+	@Value("${tracker.info.filepath}") 
+	String filePath;
+	
+	private Path trackerInfoFilePath;
+	
+	@PostConstruct
+	public void initValue() {
+		trackerInfoFilePath = Paths.get(filePath);
+	}
 
 	@Override
 	public boolean writeInfoToFile(HashMap<String, String> trackerInfo) {
 		System.out.println("writing data to file");
-		this.trackerInfoFilePath = Paths.get(Constants.TRACKER_INFO_FILEPATH);
 
 		long linesInFile = 0L;
 
@@ -63,7 +73,6 @@ public class TrackerServiceImpl implements TrackerService {
 
 	@Override
 	public HashMap<String, List<HashMap<String, String>>> readFromFile() {
-		this.trackerInfoFilePath = Paths.get(Constants.TRACKER_INFO_FILEPATH);
 		
 		String[] headers = UtilMethods.getHeaders(trackerInfoFilePath);
 		

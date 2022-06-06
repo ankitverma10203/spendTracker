@@ -1,0 +1,20 @@
+<table class="mat-elevation-z5">
+    <thead>
+        <tr>
+            <th *ngFor="let field of fields">{{field.name}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let record of records[date]">
+            <td *ngFor="let field of fields">{{record[field.name]}}</td>
+        </tr>
+    </tbody>
+    <tfoot style="font-weight:bold;">
+        <tr>
+            <td *ngFor="let field of fields; index as i">
+                <span *ngIf="i == fields.length - 2">Total</span>
+                <span *ngIf="i == fields.length - 1">&#8377; {{totalAmounts[date]}}</span>
+            </td>
+        </tr>
+    </tfoot>
+</table>

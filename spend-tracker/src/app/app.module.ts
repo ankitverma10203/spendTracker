@@ -25,6 +25,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { RecordsComponent } from './records/records.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { TableComponent } from './table/table.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     ContentContainerComponent,
     InputComponent,
     FormComponent,
-    RecordsComponent
+    RecordsComponent,
+    TableComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     HttpClientModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

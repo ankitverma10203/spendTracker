@@ -12,6 +12,9 @@ export class RecordsComponent implements OnInit {
   records: any = '';
   dates: any = '';
   totalAmounts: any = '';
+  hasLoaded: boolean = false;
+
+  panelOpenState: boolean[] = [];
 
   constructor(private spendTrackerDataRetrieverService: SpendTrackerDataRetrieverService) { }
 
@@ -19,16 +22,20 @@ export class RecordsComponent implements OnInit {
     this.getAllData();
   }
 
-  getAllData() {
-    this.getTrackerData();
+  async getAllData() {
+    this.hasLoaded = false;
+    await this.delay(5000);
     this.getAllDates();
+    this.getTrackerData();
     this.getAllTotalAmount();
+    this.hasLoaded = true;
   }
 
   getAllDates() {
     this.spendTrackerDataRetrieverService.getAllDates().subscribe((details) => {
       console.log(details);
       this.dates = details;
+      this.panelOpenState = new Array(this.dates.length).fill(false);
     })
   }
 
@@ -45,5 +52,9 @@ export class RecordsComponent implements OnInit {
       this.totalAmounts = details;
     })
   }
+
+  delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
 
 }

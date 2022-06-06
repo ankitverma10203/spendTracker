@@ -19,5 +19,5 @@
     margin: 1em;
     padding: 1em;
     width: 70%;
-    overflow: scroll;
+    overflow-y: auto;
 }

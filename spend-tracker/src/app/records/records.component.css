@@ -1,16 +1,18 @@
-table {
-    width: 100%;
-    margin: 2em;
-    padding: 1em;
-}
-
-tr {
-    text-align: center;
-}
-
 .table-container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    align-content: center;
+    justify-content: center;
+}
+
+.spinner-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.spinner {
+    transform: scale(0.5);
 }
