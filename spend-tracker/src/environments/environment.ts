@@ -2,8 +2,13 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { StorageType } from "src/app/model/storage-type";
+
 export const environment = {
-  production: false
+  production: false,
+  storageType: StorageType.Db,
+  localBaseUrl: "http://localhost:8080/tracker/"
+  
 };
 
 /*

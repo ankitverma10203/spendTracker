@@ -12,23 +12,25 @@ export class CardComponent implements OnInit {
   @Input() public heading: string = "";
   @Input() public fields: any = null;
 
-  @ViewChild('recordComp') recordComp: any;
+  @ViewChild('recordComp') private recordComp: any;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
 
-  openDialog(): void {
+  public openDialog(): void {
     const dialogRef = this.dialog.open(FormComponent, {
       width: '600px',
-      data: {heading: this.heading, fields: this.fields},
+      data: { heading: "Add Spend Details", fields: this.fields },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      console.log("result", result);
-      this.recordComp.getAllData();
+      console.log("dialog results: ", result);
+      if (result != undefined) {
+        this.recordComp.getAllData();
+      }
     });
   }
 }

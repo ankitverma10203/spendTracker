@@ -12,39 +12,71 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ankit.tracker.service.TrackerService;
+import com.ankit.tracker.service.TrackerDBService;
+import com.ankit.tracker.service.TrackerFileService;
 
-@CrossOrigin("http://localhost:4200/")
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/tracker")
 public class Controller {
 	
 	@Autowired
-	TrackerService trackerService;
+	private TrackerDBService trackerDBService;
+	
+	@Autowired
+	private TrackerFileService trackerFileService;
+	
+	
 
-	@PostMapping("/save")
-	public ResponseEntity<?> saveData(@RequestBody HashMap<String, String> request) {
+	@PostMapping("/db/save")
+	public ResponseEntity<?> saveDataToDB(@RequestBody HashMap<String, Object> request) {
 		System.out.println("test called");
 		System.out.println(request);
-		System.out.println(trackerService.writeInfoToFile(request));
+		System.out.println("saving: " + trackerDBService.writeInfoToDB(request));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/read")
-	public ResponseEntity<?> readData() {
-		System.out.println("read called");
-		return new ResponseEntity<>(trackerService.readFromFile(), HttpStatus.OK);
+	@GetMapping("/db/read")
+	public ResponseEntity<?> readDataFromDB() {
+		System.out.println("readDataFromDB called");
+		return new ResponseEntity<>(trackerDBService.getFromDBByDates(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/dates")
-	public ResponseEntity<?> getAllDates() {
-		System.out.println("dates called");
-		return new ResponseEntity<>(trackerService.getAllDates(), HttpStatus.OK);
+	@GetMapping("/db/dates")
+	public ResponseEntity<?> getAllDatesFromDB() {
+		System.out.println("getAllDatesFromDB called");
+		return new ResponseEntity<>(trackerDBService.getAllDates(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/totalAmount")
-	public ResponseEntity<?> getTotalAmounts() {
-		System.out.println("dates called");
-		return new ResponseEntity<>(trackerService.getDateVsTotalAmount(), HttpStatus.OK);
+	@GetMapping("/db/totalAmount")
+	public ResponseEntity<?> getTotalAmountsFromDB() {
+		System.out.println("getTotalAmountsFromDB called");
+		return new ResponseEntity<>(trackerDBService.getDateVsTotalAmountFromDB(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/file/save")
+	public ResponseEntity<?> saveDataToFile(@RequestBody HashMap<String, Object> request) {
+		System.out.println("saveDataToFile called");
+		System.out.println(request);
+		System.out.println(trackerFileService.writeInfoToFile(request));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/file/read")
+	public ResponseEntity<?> readDataFromFile() {
+		System.out.println("readDataFromFile called");
+		return new ResponseEntity<>(trackerFileService.readFromFile(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/file/dates")
+	public ResponseEntity<?> getAllDatesFromFile() {
+		System.out.println("getAllDatesFromFile called");
+		return new ResponseEntity<>(trackerFileService.getAllDatesFromFile(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/file/totalAmount")
+	public ResponseEntity<?> getTotalAmountsFromFile() {
+		System.out.println("getTotalAmountsFromFile called");
+		return new ResponseEntity<>(trackerFileService.getDateVsTotalAmountFromFile(), HttpStatus.OK);
 	}
 }

@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{data.heading}}</h1>
+<h1 mat-dialog-title class="heading">{{data.heading}}</h1>
 <div mat-dialog-content>
     <form [formGroup]="spendTrackerForm" (ngSubmit)="onSubmit()">
         <div *ngFor="let field of data.fields" class="input-field-container">

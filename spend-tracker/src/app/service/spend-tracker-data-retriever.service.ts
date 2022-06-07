@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,14 @@ export class SpendTrackerDataRetrieverService {
    };
 
   getSpendTrackerData() {
-    return this.http.get("http://localhost:8080/tracker/read", this.httpOptions);
+    return this.http.get(environment.localBaseUrl + environment.storageType + "/read", this.httpOptions);
   }
 
   getAllDates() {
-    return this.http.get("http://localhost:8080/tracker/dates", this.httpOptions);
+    return this.http.get(environment.localBaseUrl + environment.storageType + "/dates", this.httpOptions);
   }
 
   getAllTotalAmount() {
-    return this.http.get("http://localhost:8080/tracker/totalAmount", this.httpOptions);
+    return this.http.get(environment.localBaseUrl + environment.storageType + "/totalAmount", this.httpOptions);
   }
 }

@@ -9,7 +9,7 @@ import { FieldType } from '../model/field-type';
 })
 export class ContentContainerComponent implements OnInit {
 
-  heading: string = "Add Spend Details";
+  public heading: string = "Spends";
 
   public fields: FieldInfo[] = [
     {

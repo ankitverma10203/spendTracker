@@ -13,7 +13,6 @@ import { CardComponent } from './card/card.component';
 import { PageComponent } from './page/page.component';
 import { ContentContainerComponent } from './content-container/content-container.component';
 import { FormsModule } from '@angular/forms';
-import { InputComponent } from './input/input.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -35,7 +34,6 @@ import { TableComponent } from './table/table.component';
     CardComponent,
     PageComponent,
     ContentContainerComponent,
-    InputComponent,
     FormComponent,
     RecordsComponent,
     TableComponent

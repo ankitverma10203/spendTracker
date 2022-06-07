@@ -1,9 +1,28 @@
 table {
-    width: 90%;
-    margin: 2em;
+    width: 100%;
     padding: 1em;
+    border-collapse: collapse;
+    margin: auto
 }
 
 tr {
     text-align: center;
+}
+
+.cell {
+    padding: 0.5em;
+}
+
+.table-head {
+    font-weight:bold;
+    border-bottom: 1px solid lightgray;
+}
+
+.table-foot {
+    font-weight:bold;
+    border-top: 1px solid lightgray;
+}
+
+.table-container {
+    margin: 1em;
 }

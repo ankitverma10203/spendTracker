@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { FieldInfo } from '../model/field-info.model';
 import { FieldType } from '../model/field-type';
 import { FormData } from '../model/form-data.model';
@@ -16,19 +15,18 @@ import { SpendTrackerDataSenderService } from '../service/spend-tracker-data-sen
 })
 export class FormComponent implements OnInit {
 
-  spendTrackerForm: FormGroup = new FormGroup({});
+  public spendTrackerForm: FormGroup = new FormGroup({});
 
   constructor(private spendTrackerDataSenderService: SpendTrackerDataSenderService,
-    private route: Router,
     private _snackBar: MatSnackBar,
-    public dialogRef: MatDialogRef<FormComponent>,
+    private dialogRef: MatDialogRef<FormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: FormData) { }
 
   ngOnInit(): void {
     this.initForm();
   }
 
-  public initForm() {
+  private initForm(): void {
     this.spendTrackerForm = new FormGroup({});
 
     this.data.fields.forEach(field => {
@@ -42,27 +40,22 @@ export class FormComponent implements OnInit {
     });
   }
 
-  isDropdown(field: FieldInfo): boolean {
+  public isDropdown(field: FieldInfo): boolean {
     return field.type == FieldType.dropDown;
   }
 
-  isSubmitDisabled() {
+  public isSubmitDisabled(): boolean {
     return !this.spendTrackerForm.valid;
   }
 
-  onSubmit() {
+  public onSubmit(): void {
     console.log("formData: ", this.spendTrackerForm.value);
     let trackerInfo: TrackerInfoDTO = this.trackerInfo();
     this.onNoClick();
     this.spendTrackerDataSenderService.sendSpendTrackerData(trackerInfo).subscribe((details) => {
       console.log("response: ", details);
-      // this.spendTrackerForm.patchValue(
-      //   { "Amount": 0 }
-      // )
-      this._snackBar.open("Form submit", "Success", { duration: 3000 });
-
+      this._snackBar.open("Form submit", "Success", { duration: 2000 });
       this.spendTrackerForm.reset();
-      this.route.navigate(['/homepage'])
     });
 
   }
@@ -72,25 +65,11 @@ export class FormComponent implements OnInit {
     this.data.fields.forEach((field) => {
       test[field.name] = this.spendTrackerForm.get(field.name)?.value;
     })
-
     console.log("trackerInfo: ", test);
-
     return test;
   }
 
-  isDefaultHintHidden(fieldName: string): boolean {
-    return !this.isInvalidPatternHintHidden(fieldName) && !this.isRequiredErrorHidden(fieldName);
-  }
-
-  isInvalidPatternHintHidden(fieldName: string): boolean {
-    return !this.spendTrackerForm.get(fieldName)?.hasError('pattern');
-  }
-
-  isRequiredErrorHidden(fieldName: string): boolean {
-    return !this.spendTrackerForm.get(fieldName)?.hasError('required');
-  }
-
-  onNoClick(): void {
+  private onNoClick(): void {
     this.dialogRef.close();
   }
 

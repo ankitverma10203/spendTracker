@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TrackerInfoDTO } from '../model/tracker-info-dto.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,6 @@ export class SpendTrackerDataSenderService {
    };
 
   sendSpendTrackerData(trackerInfo: TrackerInfoDTO ): Observable<any> {
-    return this.http.post("http://localhost:8080/tracker/save", trackerInfo, this.httpOptions);
+    return this.http.post(environment.localBaseUrl + environment.storageType + "/save", trackerInfo, this.httpOptions);
   }
 }

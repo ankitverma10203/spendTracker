@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { SpendTrackerDataRetrieverService } from '../service/spend-tracker-data-retriever.service';
 
 @Component({
@@ -9,10 +10,10 @@ import { SpendTrackerDataRetrieverService } from '../service/spend-tracker-data-
 export class RecordsComponent implements OnInit {
 
   @Input() public fields: any;
-  records: any = '';
-  dates: any = '';
-  totalAmounts: any = '';
-  hasLoaded: boolean = false;
+  public records: any = '';
+  public dates: any = '';
+  public totalAmounts: any = '';
+  public hasLoaded: boolean = false;
 
   panelOpenState: boolean[] = [];
 
@@ -22,39 +23,34 @@ export class RecordsComponent implements OnInit {
     this.getAllData();
   }
 
-  async getAllData() {
+  public getAllData(): void {
     this.hasLoaded = false;
-    await this.delay(5000);
     this.getAllDates();
     this.getTrackerData();
     this.getAllTotalAmount();
     this.hasLoaded = true;
   }
 
-  getAllDates() {
-    this.spendTrackerDataRetrieverService.getAllDates().subscribe((details) => {
-      console.log(details);
-      this.dates = details;
+  private getAllDates(): void {
+    this.spendTrackerDataRetrieverService.getAllDates().subscribe((dates) => {
+      console.log("AllDates: ", dates);
+      this.dates = dates;
       this.panelOpenState = new Array(this.dates.length).fill(false);
     })
   }
 
-  getTrackerData() {
-    this.spendTrackerDataRetrieverService.getSpendTrackerData().subscribe((details) => {
-      console.log(details);
-      this.records = details;
+  private getTrackerData(): void {
+    this.spendTrackerDataRetrieverService.getSpendTrackerData().subscribe((trackerData) => {
+      console.log("Tracker Data: ", trackerData);
+      this.records = trackerData;
     })
   }
 
-  getAllTotalAmount() {
-    this.spendTrackerDataRetrieverService.getAllTotalAmount().subscribe((details) => {
-      console.log(details);
-      this.totalAmounts = details;
+  private getAllTotalAmount(): void {
+    this.spendTrackerDataRetrieverService.getAllTotalAmount().subscribe((totalAmounts) => {
+      console.log("Total Amounts: ", totalAmounts);
+      this.totalAmounts = totalAmounts;
     })
   }
-
-  delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
-}
 
 }
