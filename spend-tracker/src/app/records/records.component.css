@@ -16,3 +16,17 @@
 .spinner {
     transform: scale(0.5);
 }
+
+.expansion-panel {
+    background-color: whitesmoke;
+}
+
+mat-panel-title {
+    font-weight: bold;
+    color: #9f19ae;
+}
+
+mat-panel-description {
+    font-weight: bold;
+    color: #d45506;
+}

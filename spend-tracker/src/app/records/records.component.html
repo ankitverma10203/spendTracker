@@ -2,7 +2,7 @@
     <mat-spinner class="spinner"></mat-spinner>
 </div>
 <mat-accordion *ngIf="hasLoaded">
-    <mat-expansion-panel *ngFor="let date of dates; index as i" class="mat-elevation-z5"
+    <mat-expansion-panel *ngFor="let date of dates; index as i" class="mat-elevation-z5 expansion-panel"
         (opened)="panelOpenState[i] = true" (closed)="panelOpenState[i] = false">
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -12,7 +12,7 @@
                 &#8377; {{totalAmounts[date]}}
             </mat-panel-description>
         </mat-expansion-panel-header>
-        
+
         <div class="table-container" *ngIf="panelOpenState[i] == true">
             <app-table [fields]="fields" [date]="date" [totalAmounts]="totalAmounts" [records]="records"></app-table>
         </div>
