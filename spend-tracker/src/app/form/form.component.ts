@@ -19,14 +19,14 @@ export class FormComponent implements OnInit {
 
   constructor(private spendTrackerDataSenderService: SpendTrackerDataSenderService,
     private _snackBar: MatSnackBar,
-    private dialogRef: MatDialogRef<FormComponent>,
+    public dialogRef: MatDialogRef<FormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: FormData) { }
 
   ngOnInit(): void {
     this.initForm();
   }
 
-  private initForm(): void {
+  public initForm(): void {
     this.spendTrackerForm = new FormGroup({});
 
     this.data.fields.forEach(field => {
@@ -61,16 +61,16 @@ export class FormComponent implements OnInit {
   }
 
   public trackerInfo(): TrackerInfoDTO {
-    let test: TrackerInfoDTO = new TrackerInfoDTO();
+    let trackerInfo: TrackerInfoDTO = new TrackerInfoDTO();
     this.data.fields.forEach((field) => {
-      test[field.name] = this.spendTrackerForm.get(field.name)?.value;
+      trackerInfo[field.name] = this.spendTrackerForm.get(field.name)?.value;
     })
-    console.log("trackerInfo: ", test);
-    return test;
+    console.log("trackerInfo: ", trackerInfo);
+    return trackerInfo;
   }
 
-  private onNoClick(): void {
-    this.dialogRef.close();
+  public onNoClick(): void {
+    this.dialogRef.close(this.spendTrackerForm);
   }
 
 }

@@ -14,8 +14,8 @@ export class RecordsComponent implements OnInit {
   public dates: any = '';
   public totalAmounts: any = '';
   public hasLoaded: boolean = false;
-
-  panelOpenState: boolean[] = [];
+  public currentOpen: number = -1;
+  public panelOpenState: boolean[] = [];
 
   constructor(private spendTrackerDataRetrieverService: SpendTrackerDataRetrieverService) { }
 
@@ -28,6 +28,9 @@ export class RecordsComponent implements OnInit {
     this.getAllDates();
     this.getTrackerData();
     this.getAllTotalAmount();
+    if(this.currentOpen != -1) {
+      this.panelOpenState[this.currentOpen] = false;
+    }
     this.hasLoaded = true;
   }
 

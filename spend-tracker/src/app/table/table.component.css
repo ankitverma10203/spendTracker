@@ -1,7 +1,7 @@
 table {
     width: 100%;
     padding: 1em;
-    border-collapse: collapse;
+    border-spacing: 0;
     margin: auto
 }
 
@@ -15,12 +15,12 @@ tr {
 
 .table-head {
     font-weight:bold;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 0.1em solid lightgray;
 }
 
 .table-foot {
     font-weight:bold;
-    border-top: 1px solid lightgray;
+    border-top: 0.1em solid lightgray;
 }
 
 .table-container {

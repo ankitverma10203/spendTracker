@@ -3,7 +3,7 @@
 </div>
 <mat-accordion *ngIf="hasLoaded">
     <mat-expansion-panel *ngFor="let date of dates; index as i" class="mat-elevation-z5 expansion-panel"
-        (opened)="panelOpenState[i] = true" (closed)="panelOpenState[i] = false">
+        [expanded]="panelOpenState[i] == true" (opened)="panelOpenState[i] = true; currentOpen = i" (closed)="panelOpenState[i] = false; currentOpen = i">
         <mat-expansion-panel-header>
             <mat-panel-title>
                 {{date}}
