@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FieldInfo } from '../model/field-info.model';
 import { FieldType } from '../model/field-type';
@@ -16,11 +15,11 @@ import { SpendTrackerDataSenderService } from '../service/spend-tracker-data-sen
 export class FormComponent implements OnInit {
 
   public spendTrackerForm: FormGroup = new FormGroup({});
+  @Input() public data: FormData = new FormData();
+  @Output() public formInputEmitter = new EventEmitter<FormGroup>();
 
   constructor(private spendTrackerDataSenderService: SpendTrackerDataSenderService,
-    private _snackBar: MatSnackBar,
-    public dialogRef: MatDialogRef<FormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: FormData) { }
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -51,7 +50,7 @@ export class FormComponent implements OnInit {
   public onSubmit(): void {
     console.log("formData: ", this.spendTrackerForm.value);
     let trackerInfo: TrackerInfoDTO = this.trackerInfo();
-    this.onNoClick();
+    this.formInputEmitter.emit(this.spendTrackerForm);
     this.spendTrackerDataSenderService.sendSpendTrackerData(trackerInfo).subscribe((details) => {
       console.log("response: ", details);
       this._snackBar.open("Form submit", "Success", { duration: 2000 });
@@ -67,10 +66,6 @@ export class FormComponent implements OnInit {
     })
     console.log("trackerInfo: ", trackerInfo);
     return trackerInfo;
-  }
-
-  public onNoClick(): void {
-    this.dialogRef.close(this.spendTrackerForm);
   }
 
 }

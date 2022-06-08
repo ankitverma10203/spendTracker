@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FormComponent } from '../form/form.component';
+import { FormDialogComponent } from '../form-dialog/form-dialog.component';
 
 @Component({
   selector: 'app-card',
@@ -20,9 +20,9 @@ export class CardComponent implements OnInit {
   }
 
   public openDialog(): void {
-    const dialogRef = this.dialog.open(FormComponent, {
+    const dialogRef = this.dialog.open(FormDialogComponent, {
       width: '600px',
-      data: { heading: "Add Spend Details", fields: this.fields },
+      data: { heading: "Add Spend Details", fields: this.fields }
     });
 
     dialogRef.afterClosed().subscribe(result => {

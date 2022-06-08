@@ -1,0 +1,11 @@
+.page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+    background-color: lavender;
+}
+
+.content-container {
+    padding: 1em 1em;
+}

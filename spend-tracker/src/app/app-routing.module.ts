@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageComponent } from './page/page.component';
+import { RecordsPageComponent } from './records-page/records-page.component';
 
 const routes: Routes = [
-  {path:'homepage', component:PageComponent},
-  {path:'', redirectTo:'/homepage', pathMatch:'full'}
+  {path:'records', component:RecordsPageComponent},
+  {path:'', redirectTo:'/records', pathMatch:'full'}
 ];
 
 @NgModule({

@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatButtonModule } from '@angular/material/button';
 import { CardComponent } from './card/card.component';
-import { PageComponent } from './page/page.component';
 import { ContentContainerComponent } from './content-container/content-container.component';
 import { FormsModule } from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -26,17 +25,22 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { TableComponent } from './table/table.component';
+import { FormDialogComponent } from './form-dialog/form-dialog.component';
+import { AuthenticationPageComponent } from './authentication-page/authentication-page.component';
+import { RecordsPageComponent } from './records-page/records-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     CardComponent,
-    PageComponent,
     ContentContainerComponent,
     FormComponent,
     RecordsComponent,
-    TableComponent
+    TableComponent,
+    FormDialogComponent,
+    AuthenticationPageComponent,
+    RecordsPageComponent
   ],
   imports: [
     BrowserModule,
