@@ -96,7 +96,11 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 		for (Document document : fromDB) {
 			String date = document.getString(FieldNames.Date.toString());
 			long totalAmount = totalAmountByDateMap.computeIfAbsent(date, k -> 0L);
-			totalAmount += Long.parseLong(document.getString(FieldNames.Amount.toString()));
+			String totalAmountStr = document.getString(FieldNames.Amount.toString());
+			if(totalAmountStr == null) {
+				totalAmountStr = "0";
+			}
+			totalAmount += Long.parseLong(totalAmountStr);
 			totalAmountByDateMap.put(date, totalAmount);
 		}
 		return totalAmountByDateMap;

@@ -1,6 +1,7 @@
 export enum FieldType {
-    dropDown,
-    text,
-    email,
-    number
+  dropDown = "dropDown",
+  text = "text",
+  email = "email",
+  number ="number",
+  password = "password"
 }

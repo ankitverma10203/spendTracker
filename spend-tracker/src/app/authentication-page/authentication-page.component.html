@@ -1,1 +1,10 @@
-<p>authentication-page works!</p>
+<div class="page">
+    <app-nav-bar></app-nav-bar>
+    <div class="content-container">
+        <mat-card class="card mat-elevation-z5">
+            <mat-card-content class="card-content">
+                <app-form [data]="data" (formInputEmitter)="onSubmitClick($event)"></app-form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
