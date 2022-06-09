@@ -9,7 +9,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatButtonModule } from '@angular/material/button';
-import { CardComponent } from './card/card.component';
 import { FormsModule } from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -32,7 +31,6 @@ import { RecordsPageComponent } from './records-page/records-page.component';
   declarations: [
     AppComponent,
     NavBarComponent,
-    CardComponent,
     FormComponent,
     RecordsComponent,
     TableComponent,
