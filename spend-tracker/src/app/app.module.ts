@@ -26,6 +26,9 @@ import { TableComponent } from './table/table.component';
 import { FormDialogComponent } from './form-dialog/form-dialog.component';
 import { AuthenticationPageComponent } from './authentication-page/authentication-page.component';
 import { RecordsPageComponent } from './records-page/records-page.component';
+import { UserRegisterPageComponent } from './user-register-page/user-register-page.component';
+import { FormContainerComponent } from './form-container/form-container.component';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,9 @@ import { RecordsPageComponent } from './records-page/records-page.component';
     TableComponent,
     FormDialogComponent,
     AuthenticationPageComponent,
-    RecordsPageComponent
+    RecordsPageComponent,
+    UserRegisterPageComponent,
+    FormContainerComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,8 @@ import { RecordsPageComponent } from './records-page/records-page.component';
     MatSnackBarModule,
     MatExpansionModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

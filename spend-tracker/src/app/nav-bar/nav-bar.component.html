@@ -1,10 +1,22 @@
 <mat-toolbar class="nav-bar mat-elevation-z8" color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <button mat-icon-button >
         <mat-icon>menu</mat-icon>
     </button>
     <span>SpendTracker</span>
-    <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <span class="spacer"></span>
+    <span class="username">{{username}}</span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon class="account-icon">account_circle</mat-icon>
     </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+            <mat-icon>portrait</mat-icon>
+            <span>Profile</span>
+          </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
 </mat-toolbar>
+<router-outlet></router-outlet>

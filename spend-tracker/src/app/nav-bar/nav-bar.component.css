@@ -1,4 +1,4 @@
-.example-spacer {
+.spacer {
     flex: 1 1 auto;
 }
 
@@ -8,4 +8,8 @@
 
 .nav-bar {
     margin-bottom: 1em;
+}
+
+.username {
+    margin-right: 1em;
 }

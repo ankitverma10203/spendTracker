@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TrackerInfoDTO } from '../model/tracker-info-dto.model';
+import { FormDataDTO } from '../model/tracker-info-dto.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -18,7 +18,19 @@ export class SpendTrackerDataSenderService {
     })
    };
 
-  sendSpendTrackerData(trackerInfo: TrackerInfoDTO ): Observable<any> {
-    return this.http.post(environment.localBaseUrl + environment.storageType + "/save", trackerInfo, this.httpOptions);
+  sendSpendTrackerData(trackerInfo: FormDataDTO ): Observable<any> {
+    return this.http.post(environment.localBaseUrlTracker + environment.storageType + "/save", trackerInfo, this.httpOptions).pipe(catchError(this.errorHandler));
+  }
+
+  public errorHandler(error:Response | any){
+    if(error instanceof ErrorEvent){
+      console.error("An error occured",error.message);
+      return throwError("Something bad happenend");
+    }
+    else{
+      console.error(`Backend returned code ${error.status}` +
+      `body was: ${error.message}`);
+      return throwError(error);
+    }
   }
 }

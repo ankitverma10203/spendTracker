@@ -64,5 +64,6 @@
 	<modules>
 		<module>commons</module>
 		<module>tracker</module>
+		<module>user</module>
 	</modules>
 </project>

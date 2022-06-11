@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FieldInfo } from '../model/field-info.model';
 import { FieldType } from '../model/field-type';
 import { FormData } from '../model/form-data.model';
-import { TrackerInfoDTO } from '../model/tracker-info-dto.model';
-import { SpendTrackerDataSenderService } from '../service/spend-tracker-data-sender.service';
+import { FormDataDTO } from '../model/tracker-info-dto.model';
 
 @Component({
   selector: 'app-form',
@@ -16,10 +14,9 @@ export class FormComponent implements OnInit {
 
   public spendTrackerForm: FormGroup = new FormGroup({});
   @Input() public data: FormData = new FormData();
-  @Output() public formInputEmitter = new EventEmitter<FormGroup>();
+  @Output() public formInputEmitter = new EventEmitter<FormDataDTO>();
 
-  constructor(private spendTrackerDataSenderService: SpendTrackerDataSenderService,
-    private _snackBar: MatSnackBar) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.initForm();
@@ -36,6 +33,9 @@ export class FormComponent implements OnInit {
       if (field.type === FieldType.number) {
         this.spendTrackerForm.get(field.name)?.addValidators(Validators.pattern("[0-9]+"));
       }
+      if (field.type === FieldType.email) {
+        this.spendTrackerForm.get(field.name)?.addValidators(Validators.email);
+      }
     });
   }
 
@@ -48,23 +48,17 @@ export class FormComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log("formData: ", this.spendTrackerForm.value);
-    let trackerInfo: TrackerInfoDTO = this.trackerInfo();
-    this.formInputEmitter.emit(this.spendTrackerForm);
-    this.spendTrackerDataSenderService.sendSpendTrackerData(trackerInfo).subscribe((details) => {
-      console.log("response: ", details);
-      this._snackBar.open("Form submit", "Success", { duration: 2000 });
-      this.spendTrackerForm.reset();
-    });
-
+    console.log("Form Submitted");
+    let formData: FormDataDTO = this.trackerInfo();
+    this.formInputEmitter.emit(formData);
+    // this.spendTrackerForm.reset();
   }
 
-  public trackerInfo(): TrackerInfoDTO {
-    let trackerInfo: TrackerInfoDTO = new TrackerInfoDTO();
+  public trackerInfo(): FormDataDTO {
+    let trackerInfo: FormDataDTO = new FormDataDTO();
     this.data.fields.forEach((field) => {
       trackerInfo[field.name] = this.spendTrackerForm.get(field.name)?.value;
     })
-    console.log("trackerInfo: ", trackerInfo);
     return trackerInfo;
   }
 

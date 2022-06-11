@@ -5,3 +5,8 @@ export enum FieldType {
   number ="number",
   password = "password"
 }
+
+export enum FieldNames {
+  emailId = "Email Id",
+  password = "Password"
+}

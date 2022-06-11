@@ -1,3 +1,3 @@
-export class TrackerInfoDTO {
+export class FormDataDTO {
     [key: string]: string | number
 }

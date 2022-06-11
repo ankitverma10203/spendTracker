@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -17,14 +18,26 @@ export class SpendTrackerDataRetrieverService {
    };
 
   getSpendTrackerData() {
-    return this.http.get(environment.localBaseUrl + environment.storageType + "/read", this.httpOptions);
+    return this.http.get(environment.localBaseUrlTracker + environment.storageType + "/read", this.httpOptions).pipe(catchError(this.errorHandler));
   }
 
   getAllDates() {
-    return this.http.get(environment.localBaseUrl + environment.storageType + "/dates", this.httpOptions);
+    return this.http.get(environment.localBaseUrlTracker + environment.storageType + "/dates", this.httpOptions).pipe(catchError(this.errorHandler));
   }
 
   getAllTotalAmount() {
-    return this.http.get(environment.localBaseUrl + environment.storageType + "/totalAmount", this.httpOptions);
+    return this.http.get(environment.localBaseUrlTracker + environment.storageType + "/totalAmount", this.httpOptions).pipe(catchError(this.errorHandler));
+  }
+
+  public errorHandler(error:Response | any){
+    if(error instanceof ErrorEvent){
+      console.error("An error occured",error.message);
+      return throwError("Something bad happenend");
+    }
+    else{
+      console.error(`Backend returned code ${error.status}` +
+      `body was: ${error.message}`);
+      return throwError(error);
+    }
   }
 }

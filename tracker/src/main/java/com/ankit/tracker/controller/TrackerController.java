@@ -18,7 +18,7 @@ import com.ankit.tracker.service.TrackerFileService;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/tracker")
-public class Controller {
+public class TrackerController {
 	
 	@Autowired
 	private TrackerDBService trackerDBService;
