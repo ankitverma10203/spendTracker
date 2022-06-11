@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { FieldInfo } from '../model/field-info.model';
 import { FormData } from '../model/form-data.model';
 import { FormDataDTO } from '../model/tracker-info-dto.model';
@@ -15,7 +14,7 @@ export class FormContainerComponent implements OnInit {
   @Input() public fields: FieldInfo[] = [];
   @Output() public formInputEmitter = new EventEmitter<FormDataDTO>();
 
-  constructor(private route: Router) { }
+  constructor() { }
 
   ngOnInit(): void {
   }

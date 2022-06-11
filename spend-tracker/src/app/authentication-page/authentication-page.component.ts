@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FieldInfo } from '../model/field-info.model';
-import { FieldNames, FieldType } from '../model/field-type';
+import { UserFieldNames, FieldType, UserNameKey, LoginPageHeading, RegisterRouteLink, RecordsRouteLink } from '../model/constants';
 import { FormData } from '../model/form-data.model';
 import { FormDataDTO } from '../model/tracker-info-dto.model';
 import { UserService } from '../service/user.service';
@@ -14,20 +13,20 @@ import { UserService } from '../service/user.service';
   styleUrls: ['./authentication-page.component.css']
 })
 export class AuthenticationPageComponent implements OnInit {
-  public heading: string = "Login";
+  public heading: string = LoginPageHeading;
 
   public data: FormData = new FormData();
 
   public fields: FieldInfo[] = [
     {
-      name: FieldNames.emailId,
+      name: UserFieldNames.emailId,
       type: FieldType.email,
       defaultValue: "",
       options: [],
       isRequired: true
     },
     {
-      name: FieldNames.password,
+      name: UserFieldNames.password,
       type: FieldType.password,
       defaultValue: "",
       options: [],
@@ -37,15 +36,15 @@ export class AuthenticationPageComponent implements OnInit {
   constructor(private route: Router, private userService: UserService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('username') != null) {
-      this.route.navigate(['/home/records']);
+    if (localStorage.getItem(UserNameKey) != null) {
+      this.route.navigate([RecordsRouteLink]);
     }
     this.data = {
       heading: this.heading,
       fields: this.fields,
       links: [{
         title: "New User? Click here to register",
-        url: "/register"
+        url: RegisterRouteLink
       }]
     }
   }
@@ -54,12 +53,13 @@ export class AuthenticationPageComponent implements OnInit {
     this.userService.isValidUser(loginForm).subscribe(details => {
       console.log("details in Login is valid user: ", details);
       if (details === true) {
-        const username = loginForm[FieldNames.emailId].toString();
-        localStorage.setItem("username", username);
-        localStorage.setItem("isLoggedIn", "true");
-        this.route.navigate(['/home/records']);
+        const username = loginForm[UserFieldNames.emailId].toString();
+        localStorage.setItem(UserNameKey, username);
+        this.route.navigate([RecordsRouteLink]);
+        this._snackBar.open("Login", "Success", { duration: 2000 });
+      } else {
+        this._snackBar.open("Login", "Failed", { duration: 2000 });
       }
-      this._snackBar.open("Form submit", "Success", { duration: 2000 });
     })
   }
 

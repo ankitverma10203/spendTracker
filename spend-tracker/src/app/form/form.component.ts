@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FieldInfo } from '../model/field-info.model';
-import { FieldType } from '../model/field-type';
+import { FieldType } from '../model/constants';
 import { FormData } from '../model/form-data.model';
 import { FormDataDTO } from '../model/tracker-info-dto.model';
 

@@ -29,6 +29,8 @@ import { RecordsPageComponent } from './records-page/records-page.component';
 import { UserRegisterPageComponent } from './user-register-page/user-register-page.component';
 import { FormContainerComponent } from './form-container/form-container.component';
 import {MatMenuModule} from '@angular/material/menu';
+import { HomePageComponent } from './home-page/home-page.component';
+import { LoginRegisterPageComponent } from './login-register-page/login-register-page.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import {MatMenuModule} from '@angular/material/menu';
     AuthenticationPageComponent,
     RecordsPageComponent,
     UserRegisterPageComponent,
-    FormContainerComponent
+    FormContainerComponent,
+    HomePageComponent,
+    LoginRegisterPageComponent
   ],
   imports: [
     BrowserModule,

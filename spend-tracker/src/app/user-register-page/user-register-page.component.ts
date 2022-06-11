@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FieldInfo } from '../model/field-info.model';
-import { FieldNames, FieldType } from '../model/field-type';
+import { UserFieldNames, FieldType, UserNameKey, RecordsRouteLink, LoginRouteLink } from '../model/constants';
 import { FormData } from '../model/form-data.model';
 import { FormDataDTO } from '../model/tracker-info-dto.model';
 import { UserService } from '../service/user.service';
@@ -20,14 +20,14 @@ export class UserRegisterPageComponent implements OnInit {
 
   public fields: FieldInfo[] = [
     {
-      name: FieldNames.emailId,
+      name: UserFieldNames.emailId,
       type: FieldType.email,
       defaultValue: "",
       options: [],
       isRequired: true
     },
     {
-      name: FieldNames.password,
+      name: UserFieldNames.password,
       type: FieldType.password,
       defaultValue: "",
       options: [],
@@ -37,15 +37,15 @@ export class UserRegisterPageComponent implements OnInit {
   constructor(private route: Router, private userService: UserService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    if(localStorage.getItem('username') != null) {
-      this.route.navigate(['/home/records']);
+    if(localStorage.getItem(UserNameKey) != null) {
+      this.route.navigate([RecordsRouteLink]);
     }
     this.data = {
       heading: this.heading,
       fields: this.fields,
       links: [{
         title: "Already Registered? Click here to login",
-        url: "/login"
+        url: LoginRouteLink
       }]
     }
   }
@@ -54,9 +54,11 @@ export class UserRegisterPageComponent implements OnInit {
     this.userService.saveUser(userData).subscribe(details => {
       console.log("details in Login is valid user: ", details);
       if (details === true) {
-        this.route.navigate(['/login']);
+        this.route.navigate([LoginRouteLink]);
+        this._snackBar.open("Registration", "Success", { duration: 2000 });
+      } else {
+        this._snackBar.open("Registration - UserAlreadyExists", "Failed", { duration: 2000 });
       }
-      this._snackBar.open("Form submit", "Success", { duration: 2000 });
     })
   }
 

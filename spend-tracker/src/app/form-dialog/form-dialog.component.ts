@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormData } from '../model/form-data.model';
@@ -23,7 +22,11 @@ export class FormDialogComponent implements OnInit {
     this.dialogRef.close(spendTrackerForm);
     this.spendTrackerDataSenderService.sendSpendTrackerData(spendTrackerForm).subscribe((details) => {
       console.log("response: ", details);
-      this._snackBar.open("Form submit", "Success", { duration: 2000 });
+      if (details === true) {
+        this._snackBar.open("Information Save", "Success", { duration: 2000 });
+      } else {
+        this._snackBar.open("Information Save", "Failed", { duration: 2000 });
+      }
     });
   }
 

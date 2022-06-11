@@ -3,6 +3,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormDataDTO } from '../model/tracker-info-dto.model';
 import { environment } from 'src/environments/environment';
+import { UserNameKey } from '../model/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,8 @@ export class SpendTrackerDataSenderService {
    };
 
   sendSpendTrackerData(trackerInfo: FormDataDTO ): Observable<any> {
+    let username: string | null = localStorage.getItem(UserNameKey);
+    trackerInfo[UserNameKey] = username?username:"";
     return this.http.post(environment.localBaseUrlTracker + environment.storageType + "/save", trackerInfo, this.httpOptions).pipe(catchError(this.errorHandler));
   }
 

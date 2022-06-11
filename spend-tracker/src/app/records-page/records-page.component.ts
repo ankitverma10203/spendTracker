@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormDialogComponent } from '../form-dialog/form-dialog.component';
 import { FieldInfo } from '../model/field-info.model';
-import { FieldType } from '../model/field-type';
+import { CategoryFieldOptions, FieldType, RecordFieldNames, RecordPageHeading } from '../model/constants';
 
 @Component({
   selector: 'app-records-page',
@@ -10,25 +10,25 @@ import { FieldType } from '../model/field-type';
   styleUrls: ['./records-page.component.css']
 })
 export class RecordsPageComponent implements OnInit {
-  public heading: string = "Spends";
+  public heading: string = RecordPageHeading;
 
   public fields: FieldInfo[] = [
     {
-      name: "Category",
+      name: RecordFieldNames.category,
       type: FieldType.dropDown,
       defaultValue: "",
-      options: ["Education", "Food", "Electronics", "Others"],
+      options: CategoryFieldOptions,
       isRequired: true
     },
     {
-      name: "Message",
+      name: RecordFieldNames.message,
       type: FieldType.text,
       defaultValue: "",
       options: [],
       isRequired: true
     },
     {
-      name: "Amount",
+      name: RecordFieldNames.amount,
       type: FieldType.number,
       defaultValue: "",
       options: [],

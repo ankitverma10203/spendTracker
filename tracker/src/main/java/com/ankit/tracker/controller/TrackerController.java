@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ankit.tracker.service.TrackerDBService;
@@ -26,32 +27,30 @@ public class TrackerController {
 	@Autowired
 	private TrackerFileService trackerFileService;
 	
-	
-
 	@PostMapping("/db/save")
 	public ResponseEntity<?> saveDataToDB(@RequestBody HashMap<String, Object> request) {
 		System.out.println("test called");
 		System.out.println(request);
 		System.out.println("saving: " + trackerDBService.writeInfoToDB(request));
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping("/db/read")
-	public ResponseEntity<?> readDataFromDB() {
-		System.out.println("readDataFromDB called");
-		return new ResponseEntity<>(trackerDBService.getFromDBByDates(), HttpStatus.OK);
+	public ResponseEntity<?> readDataFromDB(@RequestParam HashMap<String, Object> params) {
+		System.out.println("readDataFromDB called. RequestParam: " + params);
+		return new ResponseEntity<>(trackerDBService.getFromDBByDates(params), HttpStatus.OK);
 	}
 	
 	@GetMapping("/db/dates")
-	public ResponseEntity<?> getAllDatesFromDB() {
-		System.out.println("getAllDatesFromDB called");
-		return new ResponseEntity<>(trackerDBService.getAllDates(), HttpStatus.OK);
+	public ResponseEntity<?> getAllDatesFromDB(@RequestParam HashMap<String, Object> params) {
+		System.out.println("getAllDatesFromDB called. RequestParam: " + params);
+		return new ResponseEntity<>(trackerDBService.getAllDates(params), HttpStatus.OK);
 	}
 	
 	@GetMapping("/db/totalAmount")
-	public ResponseEntity<?> getTotalAmountsFromDB() {
-		System.out.println("getTotalAmountsFromDB called");
-		return new ResponseEntity<>(trackerDBService.getDateVsTotalAmountFromDB(), HttpStatus.OK);
+	public ResponseEntity<?> getTotalAmountsFromDB(@RequestParam HashMap<String, Object> params) {
+		System.out.println("getTotalAmountsFromDB called. RequestParam: " + params);
+		return new ResponseEntity<>(trackerDBService.getDateVsTotalAmountFromDB(params), HttpStatus.OK);
 	}
 	
 	@PostMapping("/file/save")

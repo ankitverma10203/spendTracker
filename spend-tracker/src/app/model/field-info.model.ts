@@ -1,4 +1,4 @@
-import { FieldType } from "./field-type"
+import { FieldType } from "./constants"
 
 export class FieldInfo {
     name: string = "";
