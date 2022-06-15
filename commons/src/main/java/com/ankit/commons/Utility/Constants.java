@@ -9,13 +9,14 @@ public class Constants {
 		Amount, Category, Date
 	}
 	
-	public enum UserFormFieldName {
+	public enum UserFieldName {
 		email("Email Id"),
-		password("Password");
+		password("Password"),
+		salt("salt");
 		
 		public final String value;
 		
-		UserFormFieldName(String value) {
+		UserFieldName(String value) {
 			this.value = value;
 		}
 				

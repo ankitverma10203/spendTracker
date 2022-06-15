@@ -8,7 +8,8 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.ankit.commons.Utility.Constants.UserFormFieldName;
+import com.ankit.commons.Utility.Constants.UserFieldName;
+import com.ankit.commons.Utility.UtilMethods;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -43,13 +44,24 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean isValidUser(HashMap<String, Object> userData) {
 		MongoCollection<Document> collection = getCollection(databaseName, dailyTracker);
-		Document userDataDoc = new Document(userData);
-		FindIterable<Document> foundUser = collection.find(userDataDoc);
+		
+		Document filter = new Document().append(UserFieldName.email.value, userData.get(UserFieldName.email.value));
+		FindIterable<Document> foundUser = collection.find(filter);
 		if(isResultEmpty(foundUser)) {
-			System.out.println("No user found with given details for user: " + userData.get(UserFormFieldName.email.value));
+			System.out.println("No user found with given details for user: " + userData.get(UserFieldName.email.value));
 			return false;
 		}
-		return true;
+		
+		for (Document document : foundUser) {
+			String passwordFromDB = (String) document.get(UserFieldName.password.value);
+			String passwordFromUser = (String) userData.get(UserFieldName.password.value);
+			String salt = document.getString(UserFieldName.salt.value);
+			String securePassword = UtilMethods.generateSecurePassword(passwordFromUser, salt);
+			if(passwordFromDB.equalsIgnoreCase(securePassword)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isResultEmpty(FindIterable<Document> foundUser) {
@@ -64,13 +76,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean saveUser(HashMap<String, Object> userData) {
 		MongoCollection<Document> collection = getCollection(databaseName, dailyTracker);
-		Document userDataDoc = new Document(userData);
-		userDataDoc.remove(UserFormFieldName.password.value);
-		FindIterable<Document> foundUser = collection.find(userDataDoc);
+		
+		Document filter = new Document().append(UserFieldName.email.value, userData.get(UserFieldName.email.value));
+		FindIterable<Document> foundUser = collection.find(filter);
 		if(!isResultEmpty(foundUser)) {
-			System.out.println("User already exists with given details for user: " + userData.get(UserFormFieldName.email.value));
+			System.out.println("User already exists with given details for user: " + userData.get(UserFieldName.email.value));
 			return false;
 		}
+		
+		Document userDataDoc = new Document(userData);
+		String password = (String) userDataDoc.get(UserFieldName.password.value);
+		String salt = UtilMethods.getSalt(30);
+		String securePassword = UtilMethods.generateSecurePassword(password, salt);
+		userDataDoc.append(UserFieldName.password.value, securePassword);
+		userDataDoc.append(UserFieldName.salt.value, salt);
 		collection.insertOne(userDataDoc);
 		return true;
 	}
