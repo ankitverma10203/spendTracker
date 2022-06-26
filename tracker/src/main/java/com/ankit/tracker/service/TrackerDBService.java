@@ -10,10 +10,10 @@ public interface TrackerDBService {
 
 	Document writeInfoToDB(HashMap<String, Object> trackerInfo);
 
-	SortedSet<String> getAllDates();
+	SortedSet<String> getAllDates(HashMap<String, Object> params);
 
-	HashMap<String, Long> getDateVsTotalAmountFromDB();
+	HashMap<String, Long> getDateVsTotalAmountFromDB(HashMap<String, Object> params);
 
-	HashMap<String, List<Document>> getFromDBByDates();
+	HashMap<String, List<Document>> getFromDBByDates(HashMap<String, Object> params);
 	
 }

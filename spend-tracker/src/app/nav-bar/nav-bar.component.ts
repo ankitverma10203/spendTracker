@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoginRouteLink, UserNameKey } from '../model/constants';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor() { }
+  username: string | null = localStorage.getItem(UserNameKey);
+
+  constructor(private route: Router) { }
 
   ngOnInit(): void {
+  }
+
+  public logout() {
+    localStorage.clear();
+    this.route.navigate([LoginRouteLink]).then(() => {
+      window.location.reload();
+    });
   }
 
 }

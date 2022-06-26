@@ -1,0 +1,11 @@
+<div class="content-container">
+    <mat-card class="card mat-elevation-z5">
+        <mat-card-header>
+            <mat-card-title>{{heading}}</mat-card-title>
+        </mat-card-header>
+        <button mat-raised-button color="primary" (click)="openDialog()">Add</button>
+        <mat-card-content class="card-content">
+            <app-records [fields]="fields" #recordComp></app-records>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -54,15 +54,14 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 		return collection;
 	}
 	
-	private FindIterable<Document> getFromDB() {
+	private FindIterable<Document> getFromDB(HashMap<String, Object> params) {
 		MongoCollection<Document> collection = getCollection(databaseName, dailyTracker);
-		collection.find();
-		return collection.find();
+		return collection.find(new Document(params));
 	}
 	
 	@Override
-	public HashMap<String, List<Document>> getFromDBByDates() {
-		FindIterable<Document> fromDB = this.getFromDB();
+	public HashMap<String, List<Document>> getFromDBByDates(HashMap<String, Object> params) {
+		FindIterable<Document> fromDB = this.getFromDB(params);
 		HashMap<String, List<Document>> trackerInfosByDateMap = new HashMap<>();
 		
 		for (Document document : fromDB) {
@@ -75,8 +74,8 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 	}
 
 	@Override
-	public SortedSet<String>  getAllDates() {
-		FindIterable<Document> fromDB = this.getFromDB();
+	public SortedSet<String>  getAllDates(HashMap<String, Object> params) {
+		FindIterable<Document> fromDB = this.getFromDB(params);
 		
 		TreeSet<String> dates = new TreeSet<>();
 		
@@ -88,15 +87,19 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 	}
 	
 	@Override
-	public HashMap<String, Long> getDateVsTotalAmountFromDB() {
+	public HashMap<String, Long> getDateVsTotalAmountFromDB(HashMap<String, Object> params) {
 		
-		FindIterable<Document> fromDB = this.getFromDB();
+		FindIterable<Document> fromDB = this.getFromDB(params);
 		HashMap<String, Long> totalAmountByDateMap = new HashMap<>();
 		
 		for (Document document : fromDB) {
 			String date = document.getString(FieldNames.Date.toString());
 			long totalAmount = totalAmountByDateMap.computeIfAbsent(date, k -> 0L);
-			totalAmount += Long.parseLong(document.getString(FieldNames.Amount.toString()));
+			String totalAmountStr = document.getString(FieldNames.Amount.toString());
+			if(totalAmountStr == null) {
+				totalAmountStr = "0";
+			}
+			totalAmount += Long.parseLong(totalAmountStr);
 			totalAmountByDateMap.put(date, totalAmount);
 		}
 		return totalAmountByDateMap;

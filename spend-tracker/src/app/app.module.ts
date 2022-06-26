@@ -9,9 +9,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { MatButtonModule } from '@angular/material/button';
-import { CardComponent } from './card/card.component';
-import { PageComponent } from './page/page.component';
-import { ContentContainerComponent } from './content-container/content-container.component';
 import { FormsModule } from '@angular/forms';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -26,17 +23,29 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { TableComponent } from './table/table.component';
+import { FormDialogComponent } from './form-dialog/form-dialog.component';
+import { AuthenticationPageComponent } from './authentication-page/authentication-page.component';
+import { RecordsPageComponent } from './records-page/records-page.component';
+import { UserRegisterPageComponent } from './user-register-page/user-register-page.component';
+import { FormContainerComponent } from './form-container/form-container.component';
+import {MatMenuModule} from '@angular/material/menu';
+import { HomePageComponent } from './home-page/home-page.component';
+import { LoginRegisterPageComponent } from './login-register-page/login-register-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
-    CardComponent,
-    PageComponent,
-    ContentContainerComponent,
     FormComponent,
     RecordsComponent,
-    TableComponent
+    TableComponent,
+    FormDialogComponent,
+    AuthenticationPageComponent,
+    RecordsPageComponent,
+    UserRegisterPageComponent,
+    FormContainerComponent,
+    HomePageComponent,
+    LoginRegisterPageComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +65,8 @@ import { TableComponent } from './table/table.component';
     MatSnackBarModule,
     MatExpansionModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

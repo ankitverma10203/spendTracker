@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { UserFieldNames } from '../model/constants';
 import { SpendTrackerDataRetrieverService } from '../service/spend-tracker-data-retriever.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class RecordsComponent implements OnInit {
     this.getAllDates();
     this.getTrackerData();
     this.getAllTotalAmount();
-    if(this.currentOpen != -1) {
+    if (this.currentOpen != -1) {
       this.panelOpenState[this.currentOpen] = false;
     }
     this.hasLoaded = true;

@@ -7,7 +7,8 @@ import { StorageType } from "src/app/model/storage-type";
 export const environment = {
   production: false,
   storageType: StorageType.Db,
-  localBaseUrl: "http://localhost:8080/tracker/"
+  localBaseUrlTracker: "http://localhost:8090/tracker/",
+  localBaseUrlUser: "http://localhost:8095/user/"
   
 };
 

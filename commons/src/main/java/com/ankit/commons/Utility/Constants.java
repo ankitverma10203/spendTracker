@@ -8,4 +8,17 @@ public class Constants {
 	public enum FieldNames {
 		Amount, Category, Date
 	}
+	
+	public enum UserFieldName {
+		email("Email Id"),
+		password("Password"),
+		salt("salt");
+		
+		public final String value;
+		
+		UserFieldName(String value) {
+			this.value = value;
+		}
+				
+	}
 }
