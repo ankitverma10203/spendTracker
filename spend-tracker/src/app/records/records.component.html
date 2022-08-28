@@ -14,6 +14,7 @@
         </mat-expansion-panel-header>
 
         <div class="table-container" *ngIf="panelOpenState[i] == true">
+            <button mat-raised-button color="primary" (click)="openDialog(date)">Add</button>
             <app-table [fields]="fields" [date]="date" [totalAmounts]="totalAmounts" [records]="records"></app-table>
         </div>
     </mat-expansion-panel>

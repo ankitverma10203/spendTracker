@@ -3,11 +3,20 @@
         <thead>
             <tr>
                 <th *ngFor="let field of fields" class="table-head cell">{{field.name}}</th>
+                <th class="table-head cell">Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let record of records[date]" class="cell">
                 <td *ngFor="let field of fields">{{record[field.name]}}</td>
+                <td>
+                    <button mat-icon-button (click)="deleteRecord(record['id'])">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
             </tr>
         </tbody>
         <tfoot>

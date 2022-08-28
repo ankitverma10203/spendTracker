@@ -22,7 +22,7 @@ export class CardComponent implements OnInit {
   public openDialog(): void {
     const dialogRef = this.dialog.open(FormComponent, {
       width: '600px',
-      data: { heading: "Add Spend Details", fields: this.fields },
+      data: { heading: "Add Spend Details", fields: this.fields, addToOldDate: false },
     });
 
     dialogRef.afterClosed().subscribe(result => {

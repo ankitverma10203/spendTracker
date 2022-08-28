@@ -18,7 +18,8 @@ export class SpendTrackerDataSenderService {
     })
    };
 
-  sendSpendTrackerData(trackerInfo: TrackerInfoDTO ): Observable<any> {
-    return this.http.post(environment.localBaseUrl + environment.storageType + "/save", trackerInfo, this.httpOptions);
+  sendSpendTrackerData(trackerInfo: TrackerInfoDTO, date: string ): Observable<any> {
+    return this.http.post(environment.localBaseUrl + environment.storageType + "/save/" + date, trackerInfo, this.httpOptions);
   }
+
 }

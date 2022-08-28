@@ -52,7 +52,13 @@ export class FormComponent implements OnInit {
     console.log("formData: ", this.spendTrackerForm.value);
     let trackerInfo: TrackerInfoDTO = this.trackerInfo();
     this.onNoClick();
-    this.spendTrackerDataSenderService.sendSpendTrackerData(trackerInfo).subscribe((details) => {
+
+    let date = "0";
+    if (this.data.addToOldDate == true) {
+      date = this.data.date;
+    }
+    
+    this.spendTrackerDataSenderService.sendSpendTrackerData(trackerInfo, date).subscribe((details) => {
       console.log("response: ", details);
       this._snackBar.open("Form submit", "Success", { duration: 2000 });
       this.spendTrackerForm.reset();

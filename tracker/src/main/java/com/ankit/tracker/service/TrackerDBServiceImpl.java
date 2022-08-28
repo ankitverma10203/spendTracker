@@ -1,5 +1,6 @@
 package com.ankit.tracker.service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +11,8 @@ import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 
 @Service
 public class TrackerDBServiceImpl implements TrackerDBService {
@@ -33,17 +37,23 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 	
 	private MongoClient mongoClient;
 	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@PostConstruct
 	public void initValue() {
 		this.mongoClient = new MongoClient(host, port);
 	}
 
 	@Override
-	public Document writeInfoToDB(HashMap<String, Object> trackerInfo) {
+	public Document writeInfoToDB(HashMap<String, Object> trackerInfo, String date) {
 		System.out.println("writing data to DB");
 		MongoCollection<Document> collection = getCollection(databaseName, dailyTracker);
 		Document trackerInfoDoc = new Document(trackerInfo);
-		trackerInfoDoc.put(FieldNames.Date.toString(), LocalDate.now().toString());
+		trackerInfoDoc.put("id", Instant.now().toString());
+		if(date.equals("0")) {
+			date = LocalDate.now().toString();
+		}
+		trackerInfoDoc.put(FieldNames.Date.toString(), date);
 		collection.insertOne(trackerInfoDoc);
 		return trackerInfoDoc;
 	}
@@ -56,7 +66,6 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 	
 	private FindIterable<Document> getFromDB() {
 		MongoCollection<Document> collection = getCollection(databaseName, dailyTracker);
-		collection.find();
 		return collection.find();
 	}
 	
@@ -96,10 +105,28 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 		for (Document document : fromDB) {
 			String date = document.getString(FieldNames.Date.toString());
 			long totalAmount = totalAmountByDateMap.computeIfAbsent(date, k -> 0L);
+			try {
 			totalAmount += Long.parseLong(document.getString(FieldNames.Amount.toString()));
+			} catch (NumberFormatException e) {
+				logger.error("Amount not a number");
+			}
 			totalAmountByDateMap.put(date, totalAmount);
 		}
 		return totalAmountByDateMap;
+	}
+	
+	@Override
+	public Document deleteInfoToDB(String id) {
+		System.out.println("deleting data from DB");
+		MongoCollection<Document> collection = getCollection(databaseName, dailyTracker);
+		logger.info("id of object to be deleted: " + id.toString());
+		FindIterable<Document> find = collection.find(new Document("id", id));
+		for (Document document : find) {
+			System.out.println("find: " + document);
+		}
+		DeleteResult deleteOne = collection.deleteOne(new Document("id", id));
+		logger.info("Delete Result: " + deleteOne);
+		return null;
 	}
 	
 }
