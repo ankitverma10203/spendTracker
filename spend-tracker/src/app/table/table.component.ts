@@ -24,10 +24,11 @@ export class TableComponent implements OnInit {
     const id: string = record['id'];
     this.spendTrackerDataModiferService
       .deleteRecord(id)
-      .subscribe((details) => {
+      .subscribe(() => {
         this.records[this.date] = this.records[this.date].filter(
           (rec: any) => rec['id'] != record['id']
         );
+        this.totalAmounts[this.date] = this.totalAmounts[this.date] - record['Amount'];
         this._snackBar.open('Record Deletion', 'Success', { duration: 2000 });
       });
   }
