@@ -25,13 +25,11 @@ import com.mongodb.client.result.DeleteResult;
 @Service
 public class TrackerDBServiceImpl implements TrackerDBService {
 	
-	@Value("${mongodb.host}") 
-	private String host;
-	@Value("${mongodb.port}") 
-	private int port;
-	@Value("${mongodb.database}") 
+	@Value("${mongodb.url}")
+	private String url;
+	@Value("${mongodb.database}")
 	private String databaseName;
-	@Value("${mongodb.collection}") 
+	@Value("${mongodb.collection}")
 	private String dailyTracker;
 	
 	private MongoClient mongoClient;
@@ -40,7 +38,7 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 	
 	@PostConstruct
 	public void initValue() {
-		String connectionString = "mongodb+srv://spendtracker-user:InnnVyHEYaYKTusR@cluster0.lyhblhs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+		String connectionString = url;
 		MongoClientSettings settings = MongoClientSettings.builder()
 				.applyConnectionString(new ConnectionString(connectionString))
 				.build();

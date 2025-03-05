@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+
+tracker/src/main/resources/env.properties
