@@ -18,6 +18,5 @@ public interface TrackerDBService {
 
 //	Document writeInfoToDBForGivenDate(HashMap<String, Object> trackerInfo, LocalDate date);
 
-	Document deleteInfoToDB(String id);
-	
+	Document deleteInfoToDB(Object id);
 }

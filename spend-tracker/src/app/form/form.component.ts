@@ -11,31 +11,40 @@ import { SpendTrackerDataSenderService } from '../service/spend-tracker-data-sen
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css'],
 })
 export class FormComponent implements OnInit {
-
   public spendTrackerForm: FormGroup = new FormGroup({});
 
-  constructor(private spendTrackerDataSenderService: SpendTrackerDataSenderService,
+  constructor(
+    private spendTrackerDataSenderService: SpendTrackerDataSenderService,
     private _snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<FormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: FormData) { }
+    @Inject(MAT_DIALOG_DATA) public data: FormData
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
+    console.log('record in update: ', this.data);
   }
 
   public initForm(): void {
     this.spendTrackerForm = new FormGroup({});
 
-    this.data.fields.forEach(field => {
-      this.spendTrackerForm.addControl(field.name, new FormControl(field.defaultValue));
+    this.data.fields.forEach((field) => {
+      this.spendTrackerForm.addControl(
+        field.name,
+        new FormControl(this.data.record[field.name] || field.defaultValue)
+      );
       if (field.isRequired) {
-        this.spendTrackerForm.get(field.name)?.addValidators(Validators.required);
+        this.spendTrackerForm
+          .get(field.name)
+          ?.addValidators(Validators.required);
       }
       if (field.type === FieldType.number) {
-        this.spendTrackerForm.get(field.name)?.addValidators(Validators.pattern("[0-9]+"));
+        this.spendTrackerForm
+          .get(field.name)
+          ?.addValidators(Validators.pattern('[0-9]+'));
       }
     });
   }
@@ -49,34 +58,38 @@ export class FormComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log("formData: ", this.spendTrackerForm.value);
+    console.log('formData: ', this.spendTrackerForm.value);
     let trackerInfo: TrackerInfoDTO = this.trackerInfo();
     this.onNoClick();
 
-    let date = "0";
+    let date = '0';
     if (this.data.addToOldDate == true) {
       date = this.data.date;
     }
-    
-    this.spendTrackerDataSenderService.sendSpendTrackerData(trackerInfo, date).subscribe((details) => {
-      console.log("response: ", details);
-      this._snackBar.open("Form submit", "Success", { duration: 2000 });
-      this.spendTrackerForm.reset();
-    });
 
+    this.spendTrackerDataSenderService
+      .sendSpendTrackerData(trackerInfo, date)
+      .subscribe((details) => {
+        console.log('response: ', details);
+        this._snackBar.open('Form submit', 'Success', { duration: 2000 });
+        this.spendTrackerForm.reset();
+      });
   }
 
   public trackerInfo(): TrackerInfoDTO {
     let trackerInfo: TrackerInfoDTO = new TrackerInfoDTO();
     this.data.fields.forEach((field) => {
       trackerInfo[field.name] = this.spendTrackerForm.get(field.name)?.value;
-    })
-    console.log("trackerInfo: ", trackerInfo);
+    });
+
+    if (this.data.record) {
+      trackerInfo['_id'] = this.data.record['_id'];
+    }
+    console.log('trackerInfo: ', trackerInfo);
     return trackerInfo;
   }
 
   public onNoClick(): void {
     this.dialogRef.close(this.spendTrackerForm);
   }
-
 }

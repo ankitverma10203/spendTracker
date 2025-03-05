@@ -47,10 +47,12 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 
 	@Override
 	public Document writeInfoToDB(HashMap<String, Object> trackerInfo, String date) {
+		if (trackerInfo.containsKey("_id")) {
+			deleteInfoToDB(trackerInfo.get("_id"));
+		}
 		System.out.println("writing data to DB");
 		MongoCollection<Document> collection = getCollection(databaseName, dailyTracker);
 		Document trackerInfoDoc = new Document(trackerInfo);
-		trackerInfoDoc.put("id", Instant.now().toString());
 		if(date.equals("0")) {
 			date = LocalDate.now().toString();
 		}
@@ -117,15 +119,15 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 	}
 	
 	@Override
-	public Document deleteInfoToDB(String id) {
+	public Document deleteInfoToDB(Object id) {
 		System.out.println("deleting data from DB");
 		MongoCollection<Document> collection = getCollection(databaseName, dailyTracker);
 		logger.info("id of object to be deleted: " + id.toString());
-		FindIterable<Document> find = collection.find(new Document("id", id));
+		FindIterable<Document> find = collection.find(new Document("_id", id));
 		for (Document document : find) {
 			System.out.println("find: " + document);
 		}
-		DeleteResult deleteOne = collection.deleteOne(new Document("id", id));
+		DeleteResult deleteOne = collection.deleteOne(new Document("_id", id));
 		logger.info("Delete Result: " + deleteOne);
 		return null;
 	}

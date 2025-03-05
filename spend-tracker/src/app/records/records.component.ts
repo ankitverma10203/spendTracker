@@ -6,10 +6,9 @@ import { SpendTrackerDataRetrieverService } from '../service/spend-tracker-data-
 @Component({
   selector: 'app-records',
   templateUrl: './records.component.html',
-  styleUrls: ['./records.component.css']
+  styleUrls: ['./records.component.css'],
 })
 export class RecordsComponent implements OnInit {
-
   @Input() public fields: any;
   public records: any = '';
   public dates: any = '';
@@ -18,7 +17,10 @@ export class RecordsComponent implements OnInit {
   public currentOpen: number = -1;
   public panelOpenState: boolean[] = [];
 
-  constructor(private spendTrackerDataRetrieverService: SpendTrackerDataRetrieverService, public dialog: MatDialog) { }
+  constructor(
+    private spendTrackerDataRetrieverService: SpendTrackerDataRetrieverService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.getAllData();
@@ -29,7 +31,7 @@ export class RecordsComponent implements OnInit {
     this.getAllDates();
     this.getTrackerData();
     this.getAllTotalAmount();
-    if(this.currentOpen != -1) {
+    if (this.currentOpen != -1) {
       this.panelOpenState[this.currentOpen] = false;
     }
     this.hasLoaded = true;
@@ -37,40 +39,51 @@ export class RecordsComponent implements OnInit {
 
   private getAllDates(): void {
     this.spendTrackerDataRetrieverService.getAllDates().subscribe((dates) => {
-      console.log("AllDates: ", dates);
+      console.log('AllDates: ', dates);
       this.dates = dates;
       this.panelOpenState = new Array(this.dates.length).fill(false);
-    })
+    });
   }
 
   private getTrackerData(): void {
-    this.spendTrackerDataRetrieverService.getSpendTrackerData().subscribe((trackerData) => {
-      console.log("Tracker Data: ", trackerData);
-      this.records = trackerData;
-    })
+    this.spendTrackerDataRetrieverService
+      .getSpendTrackerData()
+      .subscribe((trackerData) => {
+        console.log('Tracker Data: ', trackerData);
+        this.records = trackerData;
+      });
   }
 
   private getAllTotalAmount(): void {
-    this.spendTrackerDataRetrieverService.getAllTotalAmount().subscribe((totalAmounts) => {
-      console.log("Total Amounts: ", totalAmounts);
-      this.totalAmounts = totalAmounts;
-    })
+    this.spendTrackerDataRetrieverService
+      .getAllTotalAmount()
+      .subscribe((totalAmounts) => {
+        console.log('Total Amounts: ', totalAmounts);
+        this.totalAmounts = totalAmounts;
+      });
   }
 
   public openDialog(date: string): void {
     const dialogRef = this.dialog.open(FormComponent, {
       width: '600px',
-      data: { heading: "Add Spend Details", fields: this.fields , addToOldDate: true, date: date},
+      data: {
+        heading: 'Add Spend Details',
+        fields: this.fields,
+        addToOldDate: true,
+        date: date,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-      console.log("dialog results: ", result);
+      console.log('dialog results: ', result);
       if (result != undefined) {
         this.getAllData();
       }
     });
-
   }
 
+  onRecordUpdate($event: string) {
+    this.getAllData();
+  }
 }

@@ -5,4 +5,5 @@ export class FormData {
     public fields: FieldInfo[] = [];
     public addToOldDate: boolean = false;
     public date: string = "";
+    public record: any = {}
 }

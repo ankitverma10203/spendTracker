@@ -52,8 +52,8 @@ public class Controller {
 		return new ResponseEntity<>(trackerDBService.getFromDBByDates(), HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/db/deleteRecord/{id}")
-	public ResponseEntity<?> deleteDataFromDB(@PathVariable String id) {
+	@DeleteMapping("/db/deleteRecord")
+	public ResponseEntity<?> deleteDataFromDB(@RequestBody Object id) {
 		System.out.println("deleteDataFromDB called");
 		System.out.println(id);
 		System.out.println("deleting: " + trackerDBService.deleteInfoToDB(id));

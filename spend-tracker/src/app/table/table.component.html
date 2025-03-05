@@ -1,31 +1,35 @@
 <div class="mat-elevation-z5 table-container">
-    <table>
-        <thead>
-            <tr>
-                <th *ngFor="let field of fields" class="table-head cell">{{field.name}}</th>
-                <th class="table-head cell">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let record of records[date]" class="cell">
-                <td *ngFor="let field of fields">{{record[field.name]}}</td>
-                <td>
-                    <button mat-icon-button (click)="deleteRecord(record)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                    <button mat-icon-button>
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td *ngFor="let field of fields; index as i" class="table-foot cell">
-                    <span *ngIf="i == fields.length - 2">Total</span>
-                    <span *ngIf="i == fields.length - 1">&#8377; {{totalAmounts[date]}}</span>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+  <table>
+    <thead>
+      <tr>
+        <th *ngFor="let field of fields" class="table-head cell">
+          {{ field.name }}
+        </th>
+        <th class="table-head cell">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of records[date]" class="cell">
+        <td *ngFor="let field of fields">{{ record[field.name] }}</td>
+        <td>
+          <button mat-icon-button (click)="deleteRecord(record)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button (click)="openDialog(date, record)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td *ngFor="let field of fields; index as i" class="table-foot cell">
+          <span *ngIf="i == fields.length - 2">Total</span>
+          <span *ngIf="i == fields.length - 1"
+            >&#8377; {{ totalAmounts[date] }}</span
+          >
+        </td>
+      </tr>
+    </tfoot>
+  </table>
 </div>
