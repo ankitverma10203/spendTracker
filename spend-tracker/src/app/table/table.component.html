@@ -10,7 +10,7 @@
             <tr *ngFor="let record of records[date]" class="cell">
                 <td *ngFor="let field of fields">{{record[field.name]}}</td>
                 <td>
-                    <button mat-icon-button (click)="deleteRecord(record['id'])">
+                    <button mat-icon-button (click)="deleteRecord(record)">
                         <mat-icon>delete</mat-icon>
                     </button>
                     <button mat-icon-button>
