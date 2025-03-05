@@ -1,4 +1,4 @@
-package com.ankit.commons.model;
+package com.ankit.tracker.model;
 
 import java.time.LocalDate;
 
@@ -10,7 +10,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Entity
 public class DailyTracker {
 
 	@Id

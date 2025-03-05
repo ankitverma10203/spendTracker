@@ -1,5 +1,12 @@
 package com.ankit.tracker.service;
 
+import com.ankit.tracker.Utility.Constants;
+import com.ankit.tracker.Utility.Constants.FieldNames;
+import com.ankit.tracker.Utility.UtilMethods;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,156 +15,143 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import com.ankit.commons.Utility.Constants;
-import com.ankit.commons.Utility.Constants.FieldNames;
-import com.ankit.commons.Utility.UtilMethods;
-
 @Service
-public class TrackerFileServiceImpl implements TrackerFileService{
-	
-	@Value("${tracker.info.filepath}") 
-	private String filePath;
-	
-	private Path trackerInfoFilePath;
-	
-	@PostConstruct
-	public void initValue() {
-		trackerInfoFilePath = Paths.get(filePath);
-	}
-	
-	@Override
-	public boolean writeInfoToFile(HashMap<String, Object> trackerInfo) {
-		System.out.println("writing data to file");
+public class TrackerFileServiceImpl implements TrackerFileService {
 
-		long linesInFile = 0L;
+    @Value("${tracker.info.filepath}")
+    private String filePath;
 
-		linesInFile = UtilMethods.lineCount(trackerInfoFilePath);
+    private Path trackerInfoFilePath;
 
-		try (FileOutputStream fos = new FileOutputStream(trackerInfoFilePath.toFile(), true);
-				FileChannel channel = fos.getChannel();) {
+    @PostConstruct
+    public void initValue() {
+        trackerInfoFilePath = Paths.get(filePath);
+    }
 
-			if (linesInFile == 0) {
-				String delimitedKeyString = trackerInfo.entrySet().stream().map(entry -> entry.getKey())
-						.collect(Collectors.joining(Constants.JOINING_DELIMITER));
-				String header = FieldNames.Date.toString() + Constants.JOINING_DELIMITER + delimitedKeyString
-						+ Constants.LINE_DELIMITER;
-				System.out.println("header: " + header);
-				byte[] headerInBytes = header.getBytes();
-				UtilMethods.write(channel, headerInBytes);
-			}
+    @Override
+    public boolean writeInfoToFile(HashMap<String, Object> trackerInfo) {
+        System.out.println("writing data to file");
 
-			String delimitedValueString = trackerInfo.entrySet().stream().map(entry -> entry.getValue().toString())
-					.collect(Collectors.joining(Constants.JOINING_DELIMITER));
+        long linesInFile = 0L;
 
-			String record = LocalDate.now() + Constants.JOINING_DELIMITER + delimitedValueString
-					+ Constants.LINE_DELIMITER;
-			System.out.println("record: " + record);
-			byte[] recordInBytes = record.getBytes();
-			UtilMethods.write(channel, recordInBytes);
+        linesInFile = UtilMethods.lineCount(trackerInfoFilePath);
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        try (FileOutputStream fos = new FileOutputStream(trackerInfoFilePath.toFile(), true);
+             FileChannel channel = fos.getChannel();) {
 
-		return false;
-	}
+            if (linesInFile == 0) {
+                String delimitedKeyString = trackerInfo.entrySet().stream().map(entry -> entry.getKey())
+                        .collect(Collectors.joining(Constants.JOINING_DELIMITER));
+                String header = FieldNames.Date.toString() + Constants.JOINING_DELIMITER + delimitedKeyString
+                        + Constants.LINE_DELIMITER;
+                System.out.println("header: " + header);
+                byte[] headerInBytes = header.getBytes();
+                UtilMethods.write(channel, headerInBytes);
+            }
 
-	@Override
-	public HashMap<String, List<HashMap<String, Object>>> readFromFile() {
+            String delimitedValueString = trackerInfo.entrySet().stream().map(entry -> entry.getValue().toString())
+                    .collect(Collectors.joining(Constants.JOINING_DELIMITER));
 
-		String[] headers = UtilMethods.getHeaders(trackerInfoFilePath);
+            String record = LocalDate.now() + Constants.JOINING_DELIMITER + delimitedValueString
+                    + Constants.LINE_DELIMITER;
+            System.out.println("record: " + record);
+            byte[] recordInBytes = record.getBytes();
+            UtilMethods.write(channel, recordInBytes);
 
-		HashMap<String, List<HashMap<String, Object>>> trackerInfoRecordsByDateMap = new HashMap<>();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		try (BufferedReader reader = Files.newBufferedReader(trackerInfoFilePath)) {
+        return false;
+    }
 
-			String line = reader.readLine();
+    @Override
+    public HashMap<String, List<HashMap<String, Object>>> readFromFile() {
 
-			while ((line = reader.readLine()) != null) {
-				System.out.println(line);
-				HashMap<String, Object> record = createObject(headers, line);
-				System.out.println(record);
-				String date = (String) record.get(FieldNames.Date.toString());
+        String[] headers = UtilMethods.getHeaders(trackerInfoFilePath);
 
-				List<HashMap<String, Object>> trackerInfoRecordsByDate = trackerInfoRecordsByDateMap
-						.computeIfAbsent(date, k -> new ArrayList<>());
-				trackerInfoRecordsByDate.add(record);
-			}
+        HashMap<String, List<HashMap<String, Object>>> trackerInfoRecordsByDateMap = new HashMap<>();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        try (BufferedReader reader = Files.newBufferedReader(trackerInfoFilePath)) {
 
-		return trackerInfoRecordsByDateMap;
-	}
+            String line = reader.readLine();
 
-	@Override
-	public SortedSet<String> getAllDatesFromFile() {
-		try (BufferedReader reader = Files.newBufferedReader(trackerInfoFilePath)) {
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+                HashMap<String, Object> record = createObject(headers, line);
+                System.out.println(record);
+                String date = (String) record.get(FieldNames.Date.toString());
 
-			TreeSet<String> dates = new TreeSet<>();
-			String line = reader.readLine();
+                List<HashMap<String, Object>> trackerInfoRecordsByDate = trackerInfoRecordsByDateMap
+                        .computeIfAbsent(date, k -> new ArrayList<>());
+                trackerInfoRecordsByDate.add(record);
+            }
 
-			while ((line = reader.readLine()) != null) {
-				String date = line.split(Constants.JOINING_DELIMITER)[0];
-				dates.add(date);
-			}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-			return dates.descendingSet();
+        return trackerInfoRecordsByDateMap;
+    }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    @Override
+    public SortedSet<String> getAllDatesFromFile() {
+        try (BufferedReader reader = Files.newBufferedReader(trackerInfoFilePath)) {
 
-		return null;
-	}
+            TreeSet<String> dates = new TreeSet<>();
+            String line = reader.readLine();
 
-	private HashMap<String, Object> createObject(String[] headers, String line) {
-		HashMap<String, Object> trackerInfo = new HashMap<>();
-		String[] trackerInfoValues = line.split(Constants.JOINING_DELIMITER);
+            while ((line = reader.readLine()) != null) {
+                String date = line.split(Constants.JOINING_DELIMITER)[0];
+                dates.add(date);
+            }
 
-		for (int i = 0; i < headers.length; i++) {
-			trackerInfo.put(headers[i], trackerInfoValues[i]);
-		}
+            return dates.descendingSet();
 
-		return trackerInfo;
-	}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	@Override
-	public HashMap<String, Long> getDateVsTotalAmountFromFile() {
-		try (BufferedReader reader = Files.newBufferedReader(trackerInfoFilePath)) {
+        return null;
+    }
 
-			String line = reader.readLine();
-			String[] headers = UtilMethods.getHeaders(trackerInfoFilePath);
+    private HashMap<String, Object> createObject(String[] headers, String line) {
+        HashMap<String, Object> trackerInfo = new HashMap<>();
+        String[] trackerInfoValues = line.split(Constants.JOINING_DELIMITER);
 
-			HashMap<String, Long> totalAmountByDateMap = new HashMap<>();
+        for (int i = 0; i < headers.length; i++) {
+            trackerInfo.put(headers[i], trackerInfoValues[i]);
+        }
 
-			while ((line = reader.readLine()) != null) {
-				HashMap<String, Object> record = createObject(headers, line);
-				String date = (String) record.get(FieldNames.Date.toString());
+        return trackerInfo;
+    }
 
-				long totalAmount = totalAmountByDateMap.computeIfAbsent(date, k -> 0L);
-				totalAmount += Long.parseLong((String) record.get(FieldNames.Amount.toString()));
-				totalAmountByDateMap.put(date, totalAmount);
-			}
+    @Override
+    public HashMap<String, Long> getDateVsTotalAmountFromFile() {
+        try (BufferedReader reader = Files.newBufferedReader(trackerInfoFilePath)) {
 
-			return totalAmountByDateMap;
+            String line = reader.readLine();
+            String[] headers = UtilMethods.getHeaders(trackerInfoFilePath);
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+            HashMap<String, Long> totalAmountByDateMap = new HashMap<>();
+
+            while ((line = reader.readLine()) != null) {
+                HashMap<String, Object> record = createObject(headers, line);
+                String date = (String) record.get(FieldNames.Date.toString());
+
+                long totalAmount = totalAmountByDateMap.computeIfAbsent(date, k -> 0L);
+                totalAmount += Long.parseLong((String) record.get(FieldNames.Amount.toString()));
+                totalAmountByDateMap.put(date, totalAmount);
+            }
+
+            return totalAmountByDateMap;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

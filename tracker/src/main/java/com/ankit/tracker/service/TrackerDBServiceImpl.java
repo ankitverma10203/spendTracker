@@ -10,17 +10,16 @@ import java.util.TreeSet;
 
 import javax.annotation.PostConstruct;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.*;
 import org.bson.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.ankit.commons.Utility.Constants.FieldNames;
-import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.ankit.tracker.Utility.Constants.FieldNames;
 import com.mongodb.client.result.DeleteResult;
 
 @Service
@@ -41,7 +40,11 @@ public class TrackerDBServiceImpl implements TrackerDBService {
 	
 	@PostConstruct
 	public void initValue() {
-		this.mongoClient = new MongoClient(host, port);
+		String connectionString = "mongodb+srv://spendtracker-user:InnnVyHEYaYKTusR@cluster0.lyhblhs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+		MongoClientSettings settings = MongoClientSettings.builder()
+				.applyConnectionString(new ConnectionString(connectionString))
+				.build();
+		this.mongoClient = MongoClients.create(settings);
 	}
 
 	@Override
